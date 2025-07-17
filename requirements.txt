@@ -3,4 +3,4 @@ uvicorn
 sqlalchemy
 pydantic
 python-jose
-passlib[bcrypt]
+passlib[bcrypt]python-jose[cryptography]
