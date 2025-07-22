@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from app.db.session import engine, Base
 #from app.routes import auth  # placeholder for future routes (e.g., register/login)
-from app.models import user  # this is important to trigger model discovery
+from app.models import user, skills # this is important to trigger model discovery
+
 
 app = FastAPI()
 
