@@ -30,7 +30,6 @@ def authenticate_user(db: Session, user_data: UserCreate) -> User | None:
 def login_user(db: Session, user_data: UserCreate) -> Token:
     user = authenticate_user(db, user_data)
     if not user:
-        raise ValueError("Invalid username or password")
-    
+        return None 
     access_token = create_access_token(data={"sub": user.username})
     return Token(access_token=access_token)
