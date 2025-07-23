@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from app.schemas.skill import SkillCreate, SkillOut
+from app.models.user import User
+from app.schemas.skill import SkillCreate, SkillOut, SkillUpdate
 from app.db import get_db
-from app.services.skill_services import create_skill, get_skill_by_id, get_all_skills
+from app.services.skill_services import create_skill, get_skill_by_id, get_all_skills, update_skill
 
 router = APIRouter(prefix="/skills", tags=["Skills"])
 
@@ -25,3 +26,7 @@ def read_skill(skill_id: int, db: Session = Depends(get_db)):
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
     return skill
+
+@router.put("/{skill_id}", response_model=SkillOut)
+def update_existing_skill(skill_id: int, skill_data: SkillUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return update_skill(db, skill_id, skill_data)
