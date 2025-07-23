@@ -4,6 +4,7 @@ from app.models.user import User
 from app.schemas.skill import SkillCreate, SkillOut, SkillUpdate
 from app.db import get_db
 from app.services.skill_services import create_skill, get_skill_by_id, get_all_skills, update_skill
+from app.dependencies.auth import get_current_user
 
 router = APIRouter(prefix="/skills", tags=["Skills"])
 

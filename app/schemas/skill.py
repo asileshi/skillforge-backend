@@ -15,5 +15,5 @@ class SkillOut(SkillBase):
         orm_mode = True
 
 class SkillUpdate(BaseModel):
-    name = Optional[str] = None
-    description = Optional[str] = None
+    name: Optional[str] = None
+    description: Optional[str] = None
