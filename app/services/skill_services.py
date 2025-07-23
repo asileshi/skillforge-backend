@@ -13,3 +13,6 @@ def create_skill(db: Session, skill_data: SkillCreate) -> Skill:
 
 def get_all_skills(db: Session) -> List[Skill]:
     return db.query(Skill).all()
+
+def get_skill_by_id(skill_id: int, db: Session) ->Skill:
+    return db.query(Skill).filter(Skill.id == skill_id).first()
