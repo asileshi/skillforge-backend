@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from app.schemas.auth import UserOut
 
 class SkillBase(BaseModel):
     name: str
@@ -10,6 +11,7 @@ class SkillCreate(SkillBase):
 
 class SkillOut(SkillBase):
     id: int
+    owner: UserOut
 
     class Config:
         orm_mode = True
