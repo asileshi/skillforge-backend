@@ -17,14 +17,14 @@ def create_skill(db: Session, skill_data: SkillCreate, current_user: User) -> Sk
     db.refresh(new_skill)
     return new_skill
 
-def get_all_skills(db: Session) -> List[Skill]:
-    return db.query(Skill).all()
+def get_skills_for_user(db: Session, current_user: User) -> List[Skill]:
+    return db.query(Skill).filter(Skill.owner_id == current_user.id).all()
 
-def get_skill_by_id(skill_id: int, db: Session) ->Skill:
-    return db.query(Skill).filter(Skill.id == skill_id).first()
+def get_skill_by_id(skill_id: int, db: Session, current_user: User) -> Skill:
+    return db.query(Skill).filter(Skill.id == skill_id, Skill.owner_id == current_user.id).first()
 
 def update_skill(db: Session, skill_id: int, skill_data: SkillUpdate, current_user: User) -> Skill:
-    skill = db.query(Skill).filter(Skill.id == skill_id).first()
+    skill = db.query(Skill).filter(Skill.id == skill_id, Skill.owner_id == current_user.id).first()
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")  
     if skill_data.name is not None:
@@ -35,8 +35,8 @@ def update_skill(db: Session, skill_id: int, skill_data: SkillUpdate, current_us
     db.refresh(skill)
     return skill
 
-def delete_skill(db: Session, skill_id: int) -> None:
-    skill = db.query(Skill).filter(Skill.id == skill_id).first()
+def remove_skill(db: Session, skill_id: int, current_user: User) -> None:
+    skill = db.query(Skill).filter(Skill.id == skill_id, Skill.owner_id == current_user.id).first()
     if not skill:
         raise HTTPException(status_code=404, detail="Skill not found")
     db.delete(skill)
