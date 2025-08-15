@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from app.models.challenges import Challenge
 from app.models.skills import Skill
 from app.models.user import User
-from app.schemas.challenge import ChallengeCreate
+from app.schemas.challenge import ChallengeCreate, ChallengeUpdate
 from typing import List
 
 def create_challenge(db: Session, challenge_data: ChallengeCreate) -> Challenge:
@@ -31,3 +31,23 @@ def get_challenge_by_id(db: Session, challenge_id: int) -> Challenge:
     if not challenge:
         raise HTTPException(status_code=404, detail="Challenge not found")
     return challenge
+
+def update_challenge(db: Session, challenge_id: int, challenge_data: ChallengeUpdate) -> Challenge:
+    challenge = db.query(Challenge).filter(Challenge.id == challenge_id).first()
+    if not challenge:
+        raise HTTPException(status_code=404, detail="Challenge not found")
+    
+    for key, value in challenge_data.dict(exclude_unset=True).items():
+        setattr(challenge, key, value)
+    db.commit()
+    db.refresh(challenge)
+    return challenge
+
+def delete_challenge(db: Session, challenge_id: int) -> None:
+    challenge = db.query(Challenge).filter(Challenge.id == challenge_id).first()
+    if not challenge:
+        raise HTTPException(status_code=404, detail="Challenge not found")
+    db.delete(challenge)
+    db.commit()
+    return None
+
