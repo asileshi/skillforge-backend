@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.db.session import engine, Base
 from app.routes import auth, skill  
-from app.models import skills, user
+from app.models import skills, user, challenges
 
 app = FastAPI()
 

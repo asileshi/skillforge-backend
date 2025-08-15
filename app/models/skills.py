@@ -10,5 +10,7 @@ class Skill(Base):
     description = Column(String, nullable=True)
 
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
     owner = relationship("User", back_populates="skills")
-    
+
+    challenges = relationship("Challenge", back_populates="skill", cascade="all, delete")
