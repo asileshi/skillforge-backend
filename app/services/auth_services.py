@@ -12,7 +12,7 @@ def register_user(db: Session, user_data: UserCreate) -> Token:
     
     hashed_pw = hash_password(user_data.password)
 
-    new_user = User(username=user_data.username, hashed_password=hashed_pw)
+    new_user = User(username=user_data.username, hashed_password=hashed_pw, is_admin=user_data.is_admin)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
